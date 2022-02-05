@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import json, matplotlib.pyplot, numpy
+import json, matplotlib.pyplot, argparse, os, numpy
+
 
 
 def save_plot_img(array, title, img_file, average=None):
@@ -15,8 +16,16 @@ def save_plot_img(array, title, img_file, average=None):
 def moving_average(x, w):
     return numpy.convolve(x, numpy.ones(w), 'valid') / w
 
-#with open("COVID-19/dati-json/dpc-covid19-ita-regioni.json") as fd:
-with open("COVID-19/dati-json/dpc-covid19-ita-andamento-nazionale.json") as fd:
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('dir', help='Directory repository dei dati pubblici '\
+        'del COVID-19 Dipartimento Protezione Civile')
+
+args = parser.parse_args()
+
+
+with open(os.path.join(args.dir, 'dati-json/dpc-covid19-ita-andamento-nazionale.json')) as fd:
     covid_data = json.load(fd)
 
 data = [i['data'] for i in covid_data]
